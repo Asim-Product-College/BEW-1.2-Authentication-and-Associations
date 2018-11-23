@@ -1,0 +1,9 @@
+<ul>
+  {{#each posts}}
+  <li class="list-group-item">
+    <a href="/posts/{{this._id}}" class="lead">{{this.title}}</a>
+    <a href="{{this.url}}" target="_blank">{{this.url}}<a>
+    <div class="text-right">{{this.subreddit}}</div>
+  </li>
+  {{/each}}
+</ul>
