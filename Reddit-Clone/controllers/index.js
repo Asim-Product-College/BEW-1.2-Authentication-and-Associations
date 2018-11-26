@@ -5,7 +5,7 @@ const Comment = require('../models/comment')
 
 // read into mongoose methods.
 router.get('/', (req,res) => {
-    var currentUser = req.user;
+    const currentUser = req.user;
     // find() takes an object as a condition, and a callback. An empty object in {} means look for everything.
         // Finds documents
     // OLD WAY
@@ -26,31 +26,41 @@ router.get('/', (req,res) => {
 
 // SUBREDDIT
 router.get("/n/:subreddit", function(req, res) {
-Post.find({ subreddit: req.params.subreddit })
-    .then(posts => {
-    res.render("posts_show.hbs", { posts });
-    })
-    .catch(err => {
-    console.log(err);
-    });
+    const currentUser = req.user;
+    Post.find({ subreddit: req.params.subreddit })
+        .then(posts => {
+        res.render("posts_show.hbs", { posts, currentUser });
+        })
+        .catch(err => {
+        console.log(err);
+        });
 });
 
-router.get('/posts/new', (req,res) => {
-    res.render('posts_new');
+router.get('/posts', (req,res) => {
+    const currentUser = req.user;
+    res.render('posts_new', {currentUser});
 });
 
-router.post('/posts/new', (req,res) => {
+router.post('/posts', (req,res) => {
     if (req.user) {
+        currentUser  = req.user;
         console.log("we gotta user here.");
-        
         const post = new Post(req.body);
-        post.author = req.user._id;
-        post.save((err, post) => {
+        post.author = currentUser;
+
+        post
+        .save()
+        .then(user => {
+            console.log("user:", user);
+            
             user.posts.unshift(post);
             user.save();
             // REDIRECT TO THE NEW POST
             res.redirect("/posts/" + post._id);
         })
+        .catch(err => {
+            console.log(err.message);
+        });
     } else {
         console.log("we gotta user, nah.");
         // alert("Signin or Signup to Post!")   - this is not defined :/
@@ -59,10 +69,11 @@ router.post('/posts/new', (req,res) => {
 });
 
 router.get('/posts/:id', (req,res) => {
+    const currentUser = req.user;
     // body would be wut ur gettin from a form, query would be a url, params is right here, u specify what you're calling it.
     // query can go in get reqeusts, body is for posts (anythin u receiving fromm a form)
     Post.findById(req.params.id).populate('comments').then((post) => {
-        res.render('single_post_show', { post });
+        res.render('single_post_show', { post, currentUser });
     })
         .catch(console.err)
 });

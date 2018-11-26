@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/post'); //yo but do i gotta include this here to use it lol!?
+const Post = require('../models/post'); // but do i gotta include this here to use it!?
 const Comment = require('../models/comment');
 // const ObjectId = require('mongodb').ObjectId
 
@@ -10,8 +10,13 @@ router.post('/posts/:postId/comments', (req, res) => {
     // instantiate instance of model
     console.log("HELPER: req.body of create comment route is:",req.body);
     if (req.user) {
-        const comment = new Comment(req.body)
-        comment.author = req.user._id;
+        // why is there an error happening here!   
+        console.log(req.body);
+          
+        const comment = new Comment(req.body);
+        comment.author = req.user;
+        console.log(comment)        // testing to see that the user is there
+        // const comment = new Comment(req.body);
         // save instance of Comment model to db - this is the syntax that i do not know.
         comment.save().then(comment => {
             // find parent post id by url parameter
