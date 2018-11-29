@@ -61,3 +61,17 @@ why we learned mongodb rn -
 mongodb > sql
  
  
+
+ #Challenges:
+  - Displaying usernames on the frontend.
+    - On get post/:id
+        - find and render the post
+        - find all comments with that post id...
+            - for each of those comments, find their author's username to render.
+
+
+# Learning Day 8: Authentication with JWT (JSON Web Tokens) in Node: https://github.com/Product-College-Courses/BEW-1.2-Authentication-and-Associations/tree/master/08-Authentication-Sessions-vs-JWT
+
+
+- Compare and contrast session based authentication and JSON Web Token (JWT) authentication.
+- Use express-jwt to add JWT authentication to an express server.

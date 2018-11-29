@@ -1,0 +1,22 @@
+<form action="/sign-up" method="POST" onsubmit="return false;">
+  <label for="username">Username:</label>
+  <input name="username"type="text" size="30" value="" placeholder="username" required>
+  <label for="password">Password:</label>
+  <input name="password" type="password" size="30" value="" placeholder="password" required>
+   <br>
+   <hr>
+  <input type="submit" value="Sign Up" onclick="signupViaAjax()">
+</form>
+
+{{!-- <script>
+function signupViaAjax() {
+  console.log("we inn issss");
+    fetch("/sign-up")
+      .then(function(data) {
+        // Here you get the data to modify as you please
+      })
+      .catch(function(error) {
+        // If there is any error you will catch them here
+      });
+  }
+</script> --}}

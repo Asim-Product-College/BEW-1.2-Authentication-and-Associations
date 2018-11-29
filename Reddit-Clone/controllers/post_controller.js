@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
 const Comment = require('../models/comment')
+const User = require('../models/user')
 
-// read into mongoose methods.
+// GET index, show posts
 router.get('/', (req,res) => {
     const currentUser = req.user;
     // find() takes an object as a condition, and a callback. An empty object in {} means look for everything.
@@ -24,7 +25,7 @@ router.get('/', (req,res) => {
         });
 });
 
-// SUBREDDIT
+// SUBREDDIT - what is this again?
 router.get("/n/:subreddit", function(req, res) {
     const currentUser = req.user;
     Post.find({ subreddit: req.params.subreddit })
@@ -68,24 +69,24 @@ router.post('/posts', (req,res) => {
     }
 });
 
+// GET single post and it's comments
 router.get('/posts/:id', (req,res) => {
     const currentUser = req.user;
+
     // body would be wut ur gettin from a form, query would be a url, params is right here, u specify what you're calling it.
     // query can go in get reqeusts, body is for posts (anythin u receiving fromm a form)
-    Post.findById(req.params.id).populate('comments').then((post) => {
-        res.render('single_post_show', { post, currentUser });
-    })
-        .catch(console.err)
+    Post.findById(req.params.id)
+    .populate('author')
+    // populate is actually returning that post
+    .populate({path: 'comments', populate: {path: 'author'}})
+    .then((post) => {
+        res.render('single_post_show', {
+            post,
+            currentUser
+        })
+    }).catch(e => {
+        console.log(e);
+    });
 });
-
-///Connor testing
-// router.get('/posts/:id', (req, res) => {
-//     Post.findById(req.params.id).then(post => {
-//         res.render('posts-show', {post: post});
-//     }).catch(console.error)
-// })
-
-
-
 
 module.exports = router;

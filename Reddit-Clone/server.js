@@ -45,11 +45,11 @@ var checkAuth = (req, res, next) => {
 };
 app.use(checkAuth);
 
-const indexRouter = require('./controllers/index');
+const postRouter = require('./controllers/post_controller');
 const commentsRouter = require('./controllers/comments_controller');
 const authRouter = require('./controllers/auth');
 
-app.use(indexRouter);
+app.use(postRouter);
 app.use('/', commentsRouter);
 app.use(authRouter);
 app.use('/', authRouter);

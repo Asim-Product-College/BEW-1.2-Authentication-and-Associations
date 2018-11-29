@@ -6,17 +6,11 @@ const Comment = require('../models/comment');
 
 //CREATE Comment
 router.post('/posts/:postId/comments', (req, res) => {
-    console.log("WE ARE IN THIS COMMENT ROUTE NOW");
     // instantiate instance of model
-    console.log("HELPER: req.body of create comment route is:",req.body);
     if (req.user) {
-        // why is there an error happening here!   
-        console.log(req.body);
-          
         const comment = new Comment(req.body);
         comment.author = req.user;
-        console.log(comment)        // testing to see that the user is there
-        // const comment = new Comment(req.body);
+
         // save instance of Comment model to db - this is the syntax that i do not know.
         comment.save().then(comment => {
             // find parent post id by url parameter
