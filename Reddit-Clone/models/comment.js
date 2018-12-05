@@ -1,14 +1,25 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-const CommentSchema = new Schema({
-    // updatedAt: { type: Date },
-    // parentPost: { type: String, required: true },
-    content: { type: String, required: true },
-    author : { type: Schema.Types.ObjectId, ref: "User", required: true },
-    comments: [{type: Schema.Types.ObjectId, ref: "Comment"}]
-});
-  
+const CommentSchema = mongoose.Schema({
+    content: {
+        type: String,
+        required: true
+    },
+    author : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment"
+    }]
+}, {timestamps: true});
+//   first find it's replies
+CommentSchema.pre('find', function(next) {
+    this.populate('comments');
+    next();
+  });
+
 module.exports = mongoose.model("Comment", CommentSchema);
   
 // the way we're architecturing this is for every comment to have an associated post.
