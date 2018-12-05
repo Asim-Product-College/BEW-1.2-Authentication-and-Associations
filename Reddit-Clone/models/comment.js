@@ -16,7 +16,7 @@ const CommentSchema = mongoose.Schema({
 }, {timestamps: true});
 //   first find it's replies
 CommentSchema.pre('find', function(next) {
-    this.populate('comments');
+    this.populate('replies');
     next();
   });
 

@@ -29,12 +29,27 @@ router.post('/posts/:postId/comments', (req, res, next) => {
     }
 });
 
-//new nested comments// New comments
-router.get('/comments/:commentid/new',(req,res) =>{
-    Comment.findById(req.params.commentid).then((comment)=>{
-        res.render('comment', {comment});
+// REPLY TO COMMENT FORM ROUTE
+router.get("/comments/:commentId/replies/new", (req, res, next) => {
+    res.render('replies-new', {
+      post_id: req.params.postId,
+      comment_id: req.params.commentId
+    });
+});
 
+// CREATE REPLY ROUTE
+router.post('/comments/:commentId/replies', (req, res, next) => {
+    comment.create(req.body).then(newComment => {
+      comment.findById(req.params.commentId).then(parentComment => {
+        parentComment.replies.push(newComment._id);
+        parentComment.save();
+        res.redirect(`/posts/${req.params.postId}`);
+      }).catch(error => {
+        Promise.reject(new Error(error));
+      });
+    }).catch(error => {
+      next(new Error(`Unable to create new reply! - ${error.message}`));
     })
-})
+  });
 
 module.exports = router;

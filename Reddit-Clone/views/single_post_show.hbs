@@ -14,15 +14,6 @@
       <button class="btn btn-primary"type="submit">Save</button>
     </div>
   </form>
-  <p>Comments:</p>
-  {{#each post.comments}}
-  <li class="list-group-item">
-    <a href="/comments/{{this._id}}/new">Comment</a>
-    <p>{{this.content}}</p>
-    {{#if this.comments}}
-      {{> comments}}
-    {{/if}}
-  </li>
-  {{/each}}
+  {{> comments }}
   </div>
 </div>

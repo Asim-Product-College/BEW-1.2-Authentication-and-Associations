@@ -48,14 +48,14 @@ app.use(checkAuth);
 const postRouter = require('./controllers/post_controller');
 const commentsRouter = require('./controllers/comments_controller');
 const authRouter = require('./controllers/auth');
-const repliesRouter = require('./controllers/replies');
+// const repliesRouter = require('./controllers/replies');
 
 // app.use should be stricly for middleware ;/
 app.use(postRouter);
 app.use('/', commentsRouter);
 app.use(authRouter);
 app.use('/', authRouter);
-app.use('/', repliesRouter);
+// app.use('/', repliesRouter);
 
 
 app.listen(port, () =>{
