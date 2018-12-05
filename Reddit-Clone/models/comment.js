@@ -7,9 +7,10 @@ const CommentSchema = mongoose.Schema({
     },
     author : {
         type: mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"User",
+        required: false
     },
-    comments: [{
+    replies: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
     }]

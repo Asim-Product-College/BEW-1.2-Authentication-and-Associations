@@ -10,7 +10,7 @@ router.post('/posts/:postId/comments', (req, res, next) => {
     if (req.user) {
         Comment.create(req.body).then(comment => {
             // SAVE INSTANCE OF POST MODEL TO DB
-    
+            comment.author = req.user;
             Post.findById(req.params.postId).then((post) => {
                 console.log("Inside finding the post");
                 console.log("COMMMENT:", comment);
@@ -30,7 +30,7 @@ router.post('/posts/:postId/comments', (req, res, next) => {
 });
 
 // REPLY TO COMMENT FORM ROUTE
-router.get("/comments/:commentId/replies/new", (req, res, next) => {
+router.get("/posts/:postId/comments/:commentId/replies/new", (req, res, next) => {
     res.render('replies-new', {
       post_id: req.params.postId,
       comment_id: req.params.commentId
@@ -38,11 +38,20 @@ router.get("/comments/:commentId/replies/new", (req, res, next) => {
 });
 
 // CREATE REPLY ROUTE
-router.post('/comments/:commentId/replies', (req, res, next) => {
-    comment.create(req.body).then(newComment => {
-      comment.findById(req.params.commentId).then(parentComment => {
+router.post('/posts/:postId/comments/:commentId/replies', (req, res, next) => {
+    // req.body.author = "5c07816e5a06893636446d95";
+    console.log("req.user:", req.user);
+    
+    console.log("Req Body:", req.body);
+    Comment.create(req.body).then(newComment => {
+        console.log("at line 44");
+        newComment.author = req.user;
+        console.log("newComment:", newComment);
+      Comment.findById(req.params.commentId).then(parentComment => {
+          console.log("parentComment:", parentComment);          
         parentComment.replies.push(newComment._id);
         parentComment.save();
+        // i don't think this redirect will work bc req.params doesn't have a post id
         res.redirect(`/posts/${req.params.postId}`);
       }).catch(error => {
         Promise.reject(new Error(error));

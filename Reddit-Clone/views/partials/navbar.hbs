@@ -5,13 +5,13 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      {{#if currentUser}}
+      {{#if authenticatedUser}}
         <a href="/posts" class="btn btn-primary navbar-btn">New Post</a>
       {{/if}}
     {{!-- <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li> --}}
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      {{#if currentUser}}
+      {{#if authenticatedUser}}
       <li><a href="/logout">Logout</a></li>
       {{else}}
       <li><a href="/login">Login</a></li>
