@@ -1,6 +1,6 @@
 <div class="card my-2">
     <div class="card-body">
-        <p>{{ reply.content }}</p>
-        {{!-- <p><a href="/comments/{{this._id}}/replies/new">Reply</a></p> --}}
+        <p>{{this.content}}</p>
+        <p><a href="/posts/{{this.post}}/comments/{{this._id}}/replies/new">Reply to Reply</a></p>
     </div>
   </div>

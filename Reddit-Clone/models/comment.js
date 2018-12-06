@@ -13,7 +13,11 @@ const CommentSchema = mongoose.Schema({
     replies: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
-    }]
+    }],
+    post: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
+    }
 }, {timestamps: true});
 //   first find it's replies
 CommentSchema.pre('find', function(next) {

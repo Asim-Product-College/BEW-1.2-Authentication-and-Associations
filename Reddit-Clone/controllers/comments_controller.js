@@ -10,7 +10,8 @@ router.post('/posts/:postId/comments', (req, res, next) => {
     if (req.user) {
         Comment.create(req.body).then(comment => {
             // SAVE INSTANCE OF POST MODEL TO DB
-            comment.author = req.user;
+            console.log("COMMENT MADE:", comment);
+            
             Post.findById(req.params.postId).then((post) => {
                 console.log("Inside finding the post");
                 console.log("COMMMENT:", comment);
