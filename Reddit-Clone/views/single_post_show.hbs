@@ -7,6 +7,21 @@
       <div class="text-right">
         <a href="/n/{{this.subreddit}}">{{this.subreddit}}</a>
       </div>
+    <li class="list-group-item">
+      <div class="lead">{{post.title}}</div>
+      <a href="{{post.url}}" target="_blank">{{post.url}}<a>
+      <div class="text-right">
+        <a href="/n/{{post.subreddit}}">{{post.subreddit}}<a>
+      </div>
+        <div class="voting-info">
+            <form class="vote-up" data-id="{{post._id}}">
+                <button type="submit" class="btn btn-primary show-upvote"><i class="far fa-thumbs-up"></i></button>
+            </form>
+            <form class="vote-down"data-id="{{post._id}}">
+                <button type="submit" class="btn btn-primary show-downvote"><i class="far fa-thumbs-down"></i></button>
+            </form>
+        </div>
+    </li>
     </div>
     <form action="/posts/{{post._id}}/comments" method="post">
       <input type="hidden" name="author" value="{{ currentUser }}">    

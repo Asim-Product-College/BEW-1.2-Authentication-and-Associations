@@ -4,6 +4,33 @@ const Post = require('../models/post');
 const Comment = require('../models/comment')
 const User = require('../models/user')
 
+router.put('/posts/:id/vote-up', (req, res) => {
+    if(req.user) {
+        Post.findById(req.params.id).then(post => {
+            console.log('this is post ====> ' + post);
+            post.upVotes.push(req.user._id);
+            post.voteScore = post.voteScore + 1;
+            return post.save();
+        }).then(post => {
+            return res.sendStatus(200);
+        }).catch(err => {
+            console.log(err.message);
+        })
+    } else {
+        res.sendStatus(401).send('User must be signed in to do that');
+    }
+
+})
+router.put("/posts/:id/vote-down", function(req, res) {
+    Post.findById(req.params.id).exec(function(err, post) {
+      post.downVotes.push(req.user._id);
+      post.voteScore = post.voteTotal - 1;
+      post.save();
+  
+      res.status(200);
+    });
+});
+
 // GET index, show posts
 router.get('/', (req,res) => {
     const currentUser = req.user;

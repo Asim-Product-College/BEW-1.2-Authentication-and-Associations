@@ -10,14 +10,12 @@ router.post('/posts/:postId/comments', (req, res, next) => {
     if (req.user) {
         Comment.create(req.body).then(comment => {
             // SAVE INSTANCE OF POST MODEL TO DB
-            console.log("COMMENT MADE:", comment);
+            console.log("COMMENT CREATED:", comment);
             
             Post.findById(req.params.postId).then((post) => {
-                console.log("Inside finding the post");
-                console.log("COMMMENT:", comment);
                 /// found a post by id
-                post.comments.unshift(comment._id)
-                post.save()
+                post.comments.unshift(req.body);
+                post.save();
                 res.redirect(`/posts/${post._id}`);
             }).catch(error => {
                 Promise.reject(new Error(error));

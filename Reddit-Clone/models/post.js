@@ -7,10 +7,14 @@ const PostSchema = new Schema({
     title: { type: String, required: true },
     url: { type: String, required: true },
     summary: { type: String, required: true },
+    // comments: [Comment.Schema],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     posts: [{type: Schema.Types.ObjectId, ref: 'Post' }],
     subreddit: { type: String, required: true },
-    author : { type: Schema.Types.ObjectId, ref: "User", required: true }
+    author : { type: Schema.Types.ObjectId, ref: "User", required: true },
+    upVotes: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    downVotes: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    voteScore: {type: Number, default: 0}
 });
 
 PostSchema.pre("save", function(next) {
