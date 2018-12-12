@@ -7,7 +7,7 @@ const User = require('../models/user')
 router.put('/posts/:id/vote-up', (req, res) => {
     if(req.user) {
         Post.findById(req.params.id).then(post => {
-            console.log('this is post ====> ' + post);
+            // console.log('this is post ====> ' + post);
             post.upVotes.push(req.user._id);
             post.voteScore = post.voteScore + 1;
             return post.save();
@@ -19,16 +19,22 @@ router.put('/posts/:id/vote-up', (req, res) => {
     } else {
         res.sendStatus(401).send('User must be signed in to do that');
     }
-
 })
 router.put("/posts/:id/vote-down", function(req, res) {
-    Post.findById(req.params.id).exec(function(err, post) {
-      post.downVotes.push(req.user._id);
-      post.voteScore = post.voteTotal - 1;
-      post.save();
-  
-      res.status(200);
-    });
+    if(req.user) {
+        Post.findById(req.params.id).then(post => {
+            // console.log('this is post ====> ' + post);
+            post.downVotes.push(req.user._id);
+            post.voteScore = post.voteScore - 1;
+            return post.save();
+        }).then(post => {
+            return res.sendStatus(200);
+        }).catch(err => {
+            console.log(err.message);
+        })
+    } else {
+        res.sendStatus(401).send('User must be signed in to do that');
+    }
 });
 
 // GET index, show posts
@@ -75,20 +81,15 @@ router.post('/posts', (req,res) => {
         console.log("we gotta user here.");
         const post = new Post(req.body);
         post.author = currentUser;
-
-        post
-        .save()
-        .then(user => {
-            console.log("user:", user);
-            
+        post.save()
+        User.findById(currentUser).then((user) => {
             user.posts.unshift(post);
             user.save();
-            // REDIRECT TO THE NEW POST
             res.redirect("/posts/" + post._id);
+        }).catch(err => {
+            console.log(err);
         })
-        .catch(err => {
-            console.log(err.message);
-        });
+        // REDIRECT TO THE NEW POST
     } else {
         console.log("we gotta user, nah.");
         // alert("Signin or Signup to Post!")   - this is not defined :/

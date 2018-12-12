@@ -13,12 +13,13 @@ router.post('/posts/:postId/comments', (req, res, next) => {
             console.log("COMMENT CREATED:", comment);
             
             Post.findById(req.params.postId).then((post) => {
+                console.log("post:", post);
                 /// found a post by id
-                post.comments.unshift(req.body);
+                post.comments.unshift(comment);
                 post.save();
                 res.redirect(`/posts/${post._id}`);
-            }).catch(error => {
-                Promise.reject(new Error(error));
+            }).catch(err => {
+                console.log(err.message);
             });
         }).catch(error => {
             next(new Error(`Unable to create new comment! - ${error.message}`));
